@@ -1,67 +1,66 @@
 import pandas as pd
 import psycopg2 as psy
 
-data1 = pd.read_csv(r'characters.csv')
-data2 = pd.read_csv(r'characterToComics.csv')
-data3 = pd.read_csv(r'characters_stats.csv')
-data4 = pd.read_csv(r'comics.csv')
-data5 = pd.read_csv(r'marvel_characters_info.csv')
+from getpass import getpass
 
-dfchar = pd.DataFrame(data1)
-dfcharToCom = pd.DataFrame(data2)
-dfcharStat = pd.DataFrame(data3)
-dfcomic = pd.DataFrame(data4)
-dfcharinfo = pd.DataFrame(data5)
+def Table(pwd):
+	data=pd.read_csv(r'TrendingFR.csv')
+	df=pd.DataFrame(data)
+	df = df.drop_duplicates() # Supprime les lignes dupliqués
+	co = None
+	try:
+		co=psy.connect()
 
-df1 = dfchar.drop_duplicates()
-df2 = dfcharToCom.drop_duplicates()
-df3 = dfcharStat.drop_duplicates()
-df4 = dfcomic.drop_duplicates()
-df5 = dfcharinfo .drop_duplicates()
+		curs = co.cursor()
+	#######################
+		curs.execute('''DROP TABLE IF EXISTS Publier;
+						DROP TABLE IF EXISTS Chaine;
+						DROP TABLE IF EXISTS Video;''')
+	####################### Creation tables
+		curs.execute('''CREATE TABLE Video(
+								idVideo char(11) PRIMARY KEY,
+								titre varchar(300),
+								dateSortie date,
+								vues numeric,
+								likes numeric,
+								dislikes numeric,
+								commentaires numeric
+						);
 
-co = None
+						CREATE TABLE Chaine(
+							idChaine 	char(24),
+							nom			varchar(100),
+							CONSTRAINT pk_Chaine PRIMARY KEY (idChaine)
+						);
 
-
-try:
-	co = psy.connect(host='berlin',
-					database='dblogin',
-					user='login',
-					password='mdp')
-
-	curs = co.cursor()
-
-	curs.execute('''DROP TABLE IF EXISTS Video;''')
-  	curs.execute('''DROP TABLE IF EXISTS Channel;''')
- 	curs.execute('''DROP TABLE IF EXISTS Category;''')
-
-
-
-	curs.execute('''CREATE TABLE Video(
-					idVideo char() PRIMARY KEY,
-					titre varchar(300),
-					dateSortie date,
-					vues numeric,
-					likes numeric,
-					dislikes numeric,
-					commentaires numeric,
+						CREATE TABLE Publier(
+							video char(11),
+							chaine char(24),
+							CONSTRAINT pk_publier PRIMARY KEY (video,chaine),
+							CONSTRAINT fk_chaine FOREIGN KEY (chaine) REFERENCES Chaine(idChaine),
+							CONSTRAINT fk_video FOREIGN KEY (video) REFERENCES Video(idVideo)
 						);''')
-	curs.execute('''CREATE TABLE Publier(
-					idVideo char() PRIMARY KEY,
-					idChaine varchar() PRIMARY KEY,
-						);''')
+
+
+	####################### Insertion de données
+		for row in df.itertuples():
+			curs.execute('''INSERT INTO Video VALUES (%s,%s,%s,%s,%s,%s,%s);''',
+				(row.video_id,row.title,row.publishedAt,row.view_count,row.likes,row.dislikes,row.comment_count))
+
+			curs.execute('''INSERT INTO Chaine VALUES (%s,%s) ON CONFLICT ON CONSTRAINT pk_Chaine DO NOTHING;''',
+				(row.channelId,row.channelTitle))
+
+			curs.execute('''INSERT INTO Publier VALUES (%s,%s);''',
+				(row.video_id,row.channelId))
+
+		curs.close()
 	
-	curs.execute('''CREATE TABLE Chaine(
-					idChannel varchar() PRIMARY KEY,
-					nom
-						
-						);''')
-	
-	
-	curs.execute('''CREATE TABLE Appartenir(
-					
-						
-						);''')
+	except(Exception,psy.DatabaseError) as error:
+		print(error)
+	finally:
+		if co is not None:
+			co.close()
 
 
-	for row in df2.itertuples():
-		curs.execute('''INSERT INTO Jeux VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
+pwd = getpass()
+Table(pwd)
