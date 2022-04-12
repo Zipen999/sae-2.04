@@ -31,25 +31,22 @@ try:
 	curs = co.cursor()
 
 	curs.execute('''DROP TABLE IF EXISTS Charactersstats;''')
-  curs.execute('''DROP TABLE IF EXISTS Charchterinfo;''')
-  curs.execute('''DROP TABLE IF EXISTS CharacterToComics;''')
-  curs.execute('''DROP TABLE IF EXISTS Comics;''')
-  curs.execute('''DROP TABLE IF EXISTS Charcacter;''')
+  	curs.execute('''DROP TABLE IF EXISTS Charchterinfo;''')
+ 	curs.execute('''DROP TABLE IF EXISTS Charcacter;''')
 
 
 
-	curs.execute('''CREATE TABLE Jeux(
-						nom varchar(150),
-						plateforme varchar(500),
-						annee numeric(4),
-						genre varchar(50),
-						editeur varchar(50),
-						venteNa numeric(5,2),
-						venteEu numeric(5,2),
-						venteJp numeric(5,2),
-						venteAutre numeric(5,2),
-						venteGlobale numeric(5,2),
-						CONSTRAINT PK_Jeux PRIMARY KEY(nom,plateforme,annee)
+	curs.execute('''CREATE TABLE Charactersstats(
+
+						);''')
+	
+	curs.execute('''CREATE TABLE CharactersInfo(
+						
+						);''')
+	
+	
+	curs.execute('''CREATE TABLE Characters(
+						
 						);''')
 
 
