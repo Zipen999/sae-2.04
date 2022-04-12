@@ -30,22 +30,35 @@ try:
 
 	curs = co.cursor()
 
-	curs.execute('''DROP TABLE IF EXISTS Charactersstats;''')
-  	curs.execute('''DROP TABLE IF EXISTS Charchterinfo;''')
- 	curs.execute('''DROP TABLE IF EXISTS Charcacter;''')
+	curs.execute('''DROP TABLE IF EXISTS Video;''')
+  	curs.execute('''DROP TABLE IF EXISTS Channel;''')
+ 	curs.execute('''DROP TABLE IF EXISTS Category;''')
 
 
 
-	curs.execute('''CREATE TABLE Charactersstats(
-
+	curs.execute('''CREATE TABLE Video(
+					idVideo char() PRIMARY KEY,
+					titre varchar(300),
+					dateSortie date,
+					vues numeric,
+					likes numeric,
+					dislikes numeric,
+					commentaires numeric,
+						);''')
+	curs.execute('''CREATE TABLE Publier(
+					idVideo char() PRIMARY KEY,
+					idChaine varchar() PRIMARY KEY,
 						);''')
 	
-	curs.execute('''CREATE TABLE CharactersInfo(
+	curs.execute('''CREATE TABLE Chaine(
+					idChannel varchar() PRIMARY KEY,
+					nom
 						
 						);''')
 	
 	
-	curs.execute('''CREATE TABLE Characters(
+	curs.execute('''CREATE TABLE Appartenir(
+					
 						
 						);''')
 
