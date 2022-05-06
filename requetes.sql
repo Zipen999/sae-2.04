@@ -21,3 +21,15 @@ SELECT v.titre,v.like/(v.like+v.dislikes) as %
 FROM Video v
 GROUP BY v.titre
 ORDER BY %;
+
+-- Le nom et le nombre de vidéos de la chaine étant le plus apparu en tendances
+
+SELECT c.nom, count(*) FROM Video v
+INNER JOIN Publier p ON v.idVideo = p.Video AND v.dateTrending = p.dateTrending
+INNER JOIN Chaine c ON c.idChaine = p.Chaine
+GROUP BY c.nom 
+HAVING count(*) >= ALL ( SELECT count(*) FROM Video v2
+						INNER JOIN Publier p2 ON v2.idVideo = p2.Video AND v2.dateTrending = p2.dateTrending
+						INNER JOIN Chaine c2 ON c2.idChaine = p2.Chaine
+						GROUP BY c2.nom );
+
