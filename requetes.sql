@@ -17,10 +17,10 @@ FROM Video v
 WHERE v.dateSortie <= '17-14-11'
 	AND v.dateSortie >= '17-10-11';
 
-SELECT v.titre,v.like/(v.like+v.dislikes) as %
+SELECT v.titre,v.like/(v.like+v.dislikes) as prcnt
 FROM Video v
 GROUP BY v.titre
-ORDER BY %;
+ORDER BY prcnt;
 
 -- Le nom et le nombre de vidéos de la chaine étant le plus apparu en tendances
 
