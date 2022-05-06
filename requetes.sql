@@ -4,8 +4,9 @@ WHERE v.vues > 10000000
 	AND c.idChaine = p.chaine
 	AND p.video = v.idVideo;
 
-
-
-SELECT MAX(v.dislikes),v.titre,
-FROM Video v
-WHERE v.dateSortie = CURRENT_DATE-5*365;
+SELECT v.dislikes,c.nom
+FROM Video v,Publier p,Chaine c
+WHERE c.idChaine = p.chaine
+	AND p.video = v.idVideo
+	AND v.dislikes >= ALL(SELECT v2.dislikes
+						FROM Video v2);
