@@ -5,19 +5,20 @@ WHERE v.vues > 10000000
 	AND p.video = v.idVideo;
 
 
-SELECT v.dislikes,c.nom
+SELECT DISTINCT v.dislikes,c.nom
 FROM Video v,Publier p,Chaine c
 WHERE c.idChaine = p.chaine
 	AND p.video = v.idVideo
 	AND v.dislikes >= ALL(SELECT v2.dislikes
 						FROM Video v2);
-
+-- MARCHE PAS
 SELECT v.vues
 FROM Video v
 WHERE v.dateSortie <= '17-14-11'
 	AND v.dateSortie >= '17-10-11';
-
-SELECT v.titre,v.like/(v.like+v.dislikes) as prcnt
+	
+-- MARCHE PAS
+SELECT v.titre,v.likes/(v.likes+v.dislikes) as prcnt
 FROM Video v
 GROUP BY v.titre
 ORDER BY prcnt;
