@@ -16,3 +16,8 @@ SELECT v.vues
 FROM Video v
 WHERE v.dateSortie <= '17-14-11'
 	AND v.dateSortie >= '17-10-11';
+
+SELECT v.titre,v.like/(v.like+v.dislikes) as %
+FROM Video v
+GROUP BY v.titre
+ORDER BY %;
