@@ -34,3 +34,7 @@ HAVING count(*) >= ALL ( SELECT count(*) FROM Video v2
 						INNER JOIN Chaine c2 ON c2.idChaine = p2.Chaine
 						GROUP BY c2.nom );
 
+
+-- Prcnt de likes et dislikes par rapport aux vues
+SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
+	WHERE vues != 0 ORDER BY prcnt DESC;
