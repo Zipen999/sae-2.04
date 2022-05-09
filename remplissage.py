@@ -48,7 +48,7 @@ def Table(user, userdb, pwd):
 	####################### Insertion de données
 		print("Temps estimé d'insertion des données : 5min")
 		var=input("Insérer les données (O/n) ? ")
-		if(var=='o' || var=='O' || var==1):
+		if(var=='o' or var=='O' or var==1):
 			print("Insertion des données...")
 			for row in df.itertuples():
 				curs.execute('''INSERT INTO Video VALUES (%s,%s,%s,%s,%s,%s,%s,%s);''',
