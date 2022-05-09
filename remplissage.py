@@ -6,7 +6,7 @@ from getpass import getpass
 def Table(user, userdb, pwd):
 	data=pd.read_csv(r'TrendingFR.csv')
 	df=pd.DataFrame(data)
-	df = df.drop_duplicates(subset=['video_id' , 'trending_date']) # Supprime les lignes dupliqués
+	df = df.drop_duplicates(subset=['video_id' , 'trending_date']) ## Supprime les lignes dupliquées (Vidéos passés en tendances le même jour, impossible à traiter / incohérent sur youtube car une video peut passer en tendance une fois par jour)
 	co = None
 	try:
 		co=psy.connect(host='berlin',database=userdb,user=user,password=pwd)
