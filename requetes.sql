@@ -23,16 +23,13 @@ FROM Video v
 GROUP BY v.titre
 ORDER BY prcnt;
 
--- Le nom et le nombre de vidéos de la chaine étant le plus apparu en tendances
+-- Le nom et le nombre de vidéos des chaines étant le plus apparu en tendances
 
-SELECT c.nom, count(*) FROM Video v
+SELECT c.nom, count(*) AS NbVids FROM Video v
 INNER JOIN Publier p ON v.idVideo = p.Video AND v.dateTrending = p.dateTrending
 INNER JOIN Chaine c ON c.idChaine = p.Chaine
-GROUP BY c.nom 
-HAVING count(*) >= ALL ( SELECT count(*) FROM Video v2
-						INNER JOIN Publier p2 ON v2.idVideo = p2.Video AND v2.dateTrending = p2.dateTrending
-						INNER JOIN Chaine c2 ON c2.idChaine = p2.Chaine
-						GROUP BY c2.nom );
+GROUP BY c.nom ORDER BY NbVids DESC;
+
 
 
 -- Prcnt de likes et dislikes par rapport aux vues
