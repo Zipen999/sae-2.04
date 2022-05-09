@@ -23,7 +23,7 @@ def Table(user, userdb, pwd):
 								idVideo char(11),
 								dateTrending date,
 								titre varchar(300),
-								dateSortie date,
+								dateSortie datetime,
 								vues numeric,
 								likes numeric,
 								dislikes numeric,
