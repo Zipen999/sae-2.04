@@ -23,12 +23,17 @@ FROM Video v
 GROUP BY v.titre
 ORDER BY prcnt;
 
--- Le nom et le nombre de vidéos des chaines étant le plus apparu en tendances
+-- Le nom et le nombre de vidéos des 15 chaines étant le plus apparu en tendances
 
-SELECT c.nom, count(*) AS NbVids FROM Video v
-INNER JOIN Publier p ON v.idVideo = p.Video AND v.dateTrending = p.dateTrending
-INNER JOIN Chaine c ON c.idChaine = p.Chaine
-GROUP BY c.nom ORDER BY NbVids DESC;
+SELECT c.nom, count(*) AS NbVids
+FROM Video v
+	INNER JOIN Publier p ON v.idVideo = p.Video
+	AND v.dateTrending = p.dateTrending
+	INNER JOIN Chaine c ON c.idChaine = p.Chaine
+	GROUP BY c.nom
+	HAVING count(*)>=200
+	ORDER BY NbVids DESC
+	LIMIT 15;
 
 
 
