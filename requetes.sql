@@ -28,7 +28,7 @@ ORDER BY prcnt;
 SELECT c.nom, count(*) AS NbVids
 FROM Video v
 	INNER JOIN Publier p ON v.idVideo = p.Video
-	AND v.dateTrending = p.dateTrending
+	AND v.dateTendance = p.dateTendance
 	INNER JOIN Chaine c ON c.idChaine = p.Chaine
 	GROUP BY c.nom
 	HAVING count(*)>=200
