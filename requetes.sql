@@ -27,13 +27,13 @@ ORDER BY prcnt;
 
 SELECT c.nom, count(*) AS NbVids
 FROM Video v
-INNER JOIN Publier p ON v.idVideo = p.Video
-AND v.dateTendance = p.dateTendance
-INNER JOIN Chaine c ON c.idChaine = p.Chaine
-GROUP BY c.nom
-HAVING count(*)>=200
-ORDER BY NbVids DESC
-LIMIT 15;
+	INNER JOIN Publier p ON v.idVideo = p.Video
+	AND v.dateTendance = p.dateTendance
+	INNER JOIN Chaine c ON c.idChaine = p.Chaine
+		GROUP BY c.nom
+		HAVING count(*)>=200
+		ORDER BY NbVids DESC
+		LIMIT 15;
 
 
 
