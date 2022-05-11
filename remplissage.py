@@ -66,9 +66,9 @@ def Table(user, userdb, pwd):
 
 
 	####################### Insertion de données
-		print("Temps estimé d'insertion des données : 5min")
+		print("\nTemps estimé d'insertion des données : 6min")
 		var=input("Insérer les données (O/n) ? ")
-		if(var=='o' or var=='O' or var==1):
+		if(var=='O' or var=='o' or var==1):
 			print("Insertion des données...")
 			for row in df.itertuples():
 				curs.execute('''INSERT INTO Video VALUES (%s,%s,%s,%s,%s,%s,%s,%s);''',
@@ -86,6 +86,7 @@ def Table(user, userdb, pwd):
 	####################### Fin insertion
 		co.commit()
 		curs.close()
+		print("Done")
 	
 	except(Exception,psy.DatabaseError) as error:
 		print(error)
