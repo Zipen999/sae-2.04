@@ -23,3 +23,10 @@ SELECT to_char(v.dateSortie,'HH24') AS Heure, count(*) AS Nb
 FROM Video v
 GROUP BY Heure
 ORDER BY Nb;
+
+-- Les catégories les plus populaires
+SELECT ca.nom , count(*) AS NbVids
+FROM Video v
+INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
+GROUP BY ca.idCategorie
+ORDER BY NbVids DESC;
