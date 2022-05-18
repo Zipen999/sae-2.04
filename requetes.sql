@@ -45,5 +45,6 @@ SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
 SELECT ca.nom , sum(v.vues) AS NbVids
 FROM Video v
 INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
+WHERE ca.nom != 'NaN'c
 GROUP BY ca.idCategorie
 ORDER BY NbVids DESC;
