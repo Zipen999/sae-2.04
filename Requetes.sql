@@ -6,7 +6,7 @@ INNER JOIN Chaine c ON c.idChaine = p.Chaine
 GROUP BY c.nom 
 HAVING count(*)
 ORDER BY NbVids
-LIMIT 10;
+LIMIT 15;
 
 -- Prcnt de likes et dislikes par rapport aux vues
 SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
