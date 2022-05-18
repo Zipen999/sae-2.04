@@ -22,7 +22,7 @@ ORDER BY Nb DESC;
 SELECT to_char(v.dateSortie,'HH24') AS Heure, count(*) AS Nb
 FROM Video v
 GROUP BY Heure
-ORDER BY Nb;
+ORDER BY Nb DESC;
 
 -- Les catégories les plus populaires
 SELECT ca.nom , count(*) AS NbVids
