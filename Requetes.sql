@@ -6,7 +6,7 @@ INNER JOIN Chaine c ON c.idChaine = p.Chaine
 GROUP BY c.nom 
 HAVING count(*)
 ORDER BY NbVids
-LIMIT 15;
+LIMIT 10;
 
 -- Prcnt de likes et dislikes par rapport aux vues
 SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
@@ -30,3 +30,7 @@ FROM Video v
 INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
 GROUP BY ca.idCategorie
 ORDER BY NbVids DESC;
+
+-- La video en tendence avec le moins de vues
+SELECT min(v.vues)
+FORM Video v;
