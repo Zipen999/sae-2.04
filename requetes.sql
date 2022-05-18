@@ -42,7 +42,7 @@ SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
 	WHERE vues != 0 ORDER BY prcnt DESC;
 
 -- Les catégories les plus populaires
-SELECT ca.nom , count(*) AS NbVids
+SELECT ca.nom , sum(v.vues) AS NbVids
 FROM Video v
 INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
 GROUP BY ca.idCategorie
