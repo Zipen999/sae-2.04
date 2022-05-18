@@ -101,7 +101,7 @@ def Table(user, userdb, pwd):
 		if co is not None:
 			co.close()
 
-user=input("Nom d'utilisateur et de la base de donnée : ")
+user=input("Nom d'utilisateur (et de la base de donnée) : ")
 pwd = getpass(prompt="Mot de passe : ")
 userdb = "db" + user 
 Table(user, userdb, pwd)
