@@ -32,6 +32,8 @@ GROUP BY ca.idCategorie
 ORDER BY NbVids DESC;
 
 -- La video en tendence avec le moins de vues
-SELECT min(v.vues)
+SELECT v.vues,v.commentaires,v.likes
 FROM Video v
-WHERE v.vues != 0;
+WHERE v.vues = (SELECT min(v2.vues)
+		FROM Video v2
+		WHERE v2.vues != 0);
