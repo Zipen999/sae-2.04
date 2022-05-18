@@ -5,7 +5,7 @@ INNER JOIN Publier p ON v.idVideo = p.Video AND v.dateTendance = p.dateTendance
 INNER JOIN Chaine c ON c.idChaine = p.Chaine
 GROUP BY c.nom 
 HAVING count(*)
-ORDER BY NbVids
+ORDER BY NbVids DESC
 LIMIT 10;
 
 -- Prcnt de likes et dislikes par rapport aux vues
