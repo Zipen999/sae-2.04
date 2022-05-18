@@ -35,7 +35,7 @@ def Table(user, userdb, pwd):
 			curs.execute('''DROP TABLE IF EXISTS Publier;
 							DROP TABLE IF EXISTS Chaine;
 							DROP TABLE IF EXISTS Video;
-							DROP TABLE IF EXISTS Category;''')
+							DROP TABLE IF EXISTS Categorie;''')
 	####################### Creation tables
 			print("Création des tables...")
 			curs.execute('''
