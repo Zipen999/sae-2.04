@@ -33,4 +33,5 @@ ORDER BY NbVids DESC;
 
 -- La video en tendence avec le moins de vues
 SELECT min(v.vues)
-FORM Video v;
+FROM Video v
+WHERE v.vues != 0;
