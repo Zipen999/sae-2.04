@@ -25,7 +25,7 @@ def Table(user, userdb, pwd):
 
 		curs = co.cursor()
 	#######################
-		print("\nTemps estimé de refonte de la base de données : 8min 30s")
+		print("\nTemps estimé de refonte de la base de données : 2min 40s")
 		var=input("Refaire la base de données (O/n) ? ")
 		if(var=='O' or var=='o' or var==1):
 	####################### Suppression des tables
@@ -110,7 +110,7 @@ def Table(user, userdb, pwd):
 			curs.execute(''' INSERT INTO Publier
 							SELECT video_id, trending_date , channelId FROM CSV;''')
 
-            		curs.execute('''DROP TABLE IF EXISTS CSV;''')
+			curs.execute('''DROP TABLE IF EXISTS CSV;''')
 	####################### Fin insertion
 		co.commit()
 		curs.close()
