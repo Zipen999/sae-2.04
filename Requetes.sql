@@ -24,13 +24,6 @@ FROM Video v
 GROUP BY Heure
 ORDER BY Heure;
 
--- Les catégories les plus populaires
-SELECT ca.nom , count(*) AS NbVids
-FROM Video v
-INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
-GROUP BY ca.idCategorie
-ORDER BY NbVids DESC;
-
 -- La video en tendence avec le moins de vues
 SELECT v.vues,v.commentaires,v.likes
 FROM Video v
