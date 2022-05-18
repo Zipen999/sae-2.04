@@ -29,7 +29,7 @@ def Table(user, userdb, pwd):
 	#######################
 		print("\nTemps estimé de refonte de la base de données : 8min 30s")
 		var=input("Refaire la base de données (O/n) ? ")
-		if(var=='O' or var=='o' or var==1):
+		if(var=='O' or var=='o' or var=='1' or var=="oui" or var=="Oui"):
 	####################### Suppression des tables
 			print("Suppression des tables déjà existantes...")
 			curs.execute('''DROP TABLE IF EXISTS Publier;
