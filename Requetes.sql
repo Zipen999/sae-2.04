@@ -32,9 +32,14 @@ WHERE v.vues = (SELECT min(v2.vues)
 		WHERE v2.vues != 0);
 		
 -- Les catégories les plus populaires
-SELECT ca.nom , sum(v.vues) AS NbVids
+SELECT ca.nom , round((count(*) / ((SELECT count(*) FROM Video)*1.0)*100),2)
 FROM Video v
 INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
 WHERE ca.nom != 'NaN'
-GROUP BY ca.idCategorie
-ORDER BY NbVids DESC;
+GROUP BY ca.idCategorie;
+
+-- Categorie, likes, dislikes, sansavis
+SELECT ca.nom, round((sum(v.likes)/sum(v.vues)*1.0)*100,2) AS like, round((sum(v.dislikes)/sum(v.vues)*1.0)*100,2) AS dislike, round(((sum(v.vues)-(sum(v.likes) + sum(v.dislikes)))/sum(v.vues)*1.0)*100,2) AS sansAvis
+FROM Video v
+INNER JOIN categorie ca ON ca.idcategorie = v.categorie
+GROUP BY ca.idcategorie;
