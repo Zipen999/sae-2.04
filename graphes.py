@@ -66,7 +66,7 @@ Le nombre de vidéos en tendance en fonction des heures de la journée''')
 
 
 		print('''\nLe prochain graphique va afficher :
-Les catégories les plus populaires''')
+Pourcentage du nombre de videos par categories''')
 		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
 		if(var=='O' or var=='o' or var=='1'):
 			datafrpie=pd.read_sql('''SELECT ca.nom AS categorie, 
@@ -75,18 +75,34 @@ Les catégories les plus populaires''')
 									INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
 									WHERE ca.nom != 'NaN'
 									GROUP BY ca.idCategorie;''', con=co)
-			print(datafrpie)
 			datafrpie.groupby(['categorie']).sum().plot(kind='pie', y='pourcent',autopct='%1.0f%%',
                                 title='Pourcentage du nombre de videos par categories',legend=False,figsize=[8,8])
 			plt.axis('off')
 			plt.show()
+
+		print('''\nLe prochain graphique va afficher :
+Le pourcentage d\'avis par categorie''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafr=pd.read_sql('''SELECT ca.nom AS Categorie, round((sum(v.likes)/sum(v.vues)*1.0)*100,2) AS LIKES, 
+								round((sum(v.dislikes)/sum(v.vues)*1.0)*100,2) AS DISLIKES
+								FROM Video v
+								INNER JOIN categorie ca ON ca.idcategorie = v.categorie
+								WHERE ca.nom != 'NaN'
+								GROUP BY ca.idcategorie;''', con=co)
+			
+
+			fig = datafr.plot.barh(x='categorie',stacked=True,figsize=[8,8],title='Pourcentage d\'avis par categorie')
+			fig.set_xlabel('Pourcentage d\'avis')
+			fig.set_ylabel('Categories')
+			plt.show()
+
 
 	except(Exception,psy.DatabaseError) as error:
 		print(error)
 	finally:
 		if co is not None:
 			co.close()
-
 
 user=input("Nom d'utilisateur : ")
 pwd = getpass(prompt="Mot de passe : ")
