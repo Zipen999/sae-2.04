@@ -8,10 +8,6 @@ HAVING count(*)
 ORDER BY NbVids DESC
 LIMIT 10;
 
--- Prcnt de likes et dislikes par rapport aux vues
-SELECT titre, (likes+dislikes)/vues *100 AS prcnt FROM Video
-	WHERE vues != 0 ORDER BY prcnt DESC;
-
 -- Le jour de semaine ou il y a plus de nouvelle vidéos en tendance
 SELECT to_char(v.dateSortie,'Day') AS Jour, count(*) AS Nb 
 FROM Video v
@@ -23,13 +19,6 @@ SELECT to_char(v.dateSortie,'HH24') AS Heure, count(*) AS Nb
 FROM Video v
 GROUP BY Heure
 ORDER BY Heure;
-
--- La video en tendence avec le moins de vues
-SELECT v.vues,v.commentaires,v.likes
-FROM Video v
-WHERE v.vues = (SELECT min(v2.vues)
-		FROM Video v2
-		WHERE v2.vues != 0);
 		
 -- Les catégories les plus populaires
 SELECT ca.nom , round((count(*) / ((SELECT count(*) FROM Video)*1.0)*100),2)
@@ -39,7 +28,9 @@ WHERE ca.nom != 'NaN'
 GROUP BY ca.idCategorie;
 
 -- Categorie, likes, dislikes, sansavis
-SELECT ca.nom, round((sum(v.likes)/sum(v.vues)*1.0)*100,2) AS like, round((sum(v.dislikes)/sum(v.vues)*1.0)*100,2) AS dislike, round(((sum(v.vues)-(sum(v.likes) + sum(v.dislikes)))/sum(v.vues)*1.0)*100,2) AS sansAvis
-FROM Video v
-INNER JOIN categorie ca ON ca.idcategorie = v.categorie
-GROUP BY ca.idcategorie;
+SELECT ca.nom AS Categorie, round((sum(v.likes)/sum(v.vues)*1.0)*100,2) AS LIKES, 
+								round((sum(v.dislikes)/sum(v.vues)*1.0)*100,2) AS DISLIKES
+								FROM Video v
+								INNER JOIN categorie ca ON ca.idcategorie = v.categorie
+								WHERE ca.nom != 'NaN'
+								GROUP BY ca.idcategorie;
