@@ -2,6 +2,7 @@ import pandas as pd
 import psycopg2 as psy
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from getpass import getpass
 
@@ -53,7 +54,7 @@ Le nombre de vidéos en tendance en fonction des heures de la journée''')
 									FROM Video v
 									GROUP BY Heure
 									ORDER BY Heure;''', con=co)
-			fig=datafr.plot(x='heure', y='nb', color='red', legend=False, kind='bar', figsize=[8,8])
+			fig=datafr.plot(x='heure', y='nb', legend=False, kind='bar', figsize=[8,8],color='red')
 			fig.grid(axis='y')
 			fig.set_xlabel('Heure')
 			fig.set_ylabel('Nombre de vidéos')
@@ -76,12 +77,12 @@ Pourcentage du nombre de videos par categories''')
 									WHERE ca.nom != 'NaN'
 									GROUP BY ca.idCategorie;''', con=co)
 			datafrpie.groupby(['categorie']).sum().plot(kind='pie', y='pourcent',autopct='%1.0f%%',
-                                title='Pourcentage du nombre de videos par categories',legend=False,figsize=[8,8])
+                                title='Pourcentage du nombre de videos par categories',legend=False,figsize=[8,8],)
 			plt.axis('off')
 			plt.show()
 
 		print('''\nLe prochain graphique va afficher :
-Le pourcentage d\'avis par categorie''')
+Pourcentage de likes et dislikes par rapport aux vues pour chaque catégorie''')
 		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
 		if(var=='O' or var=='o' or var=='1'):
 			datafr=pd.read_sql('''SELECT ca.nom AS Categorie, round((sum(v.likes)/sum(v.vues)*1.0)*100,2) AS LIKES, 
@@ -92,9 +93,39 @@ Le pourcentage d\'avis par categorie''')
 								GROUP BY ca.idcategorie;''', con=co)
 			
 
-			fig = datafr.plot.barh(x='categorie',stacked=True,figsize=[8,8],title='Pourcentage d\'avis par categorie')
+			fig = datafr.plot.barh(x='categorie',stacked=True,figsize=[8,8],title='Pourcentage de likes et dislikes par rapport aux vues pour chaque catégorie')
 			fig.set_xlabel('Pourcentage d\'avis')
 			fig.set_ylabel('Categories')
+			plt.show()
+
+		print('''\nLe prochain graphique va afficher :
+Temps qui s'écoule entre la publication et le passage tendance d'une video''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafr=pd.read_sql('''SELECT count(*) AS Video,to_char((dateTendance-dateSortie) ,'DD') AS NbJours
+									FROM Video
+									GROUP BY NbJours
+									ORDER BY NbJours;''', con=co)
+			
+
+			fig = datafr.plot.bar(x='nbjours',y='video',stacked=True,figsize=[8,8],title='Temps qui s’écoule entre la publication et le passage tendance d\'une video')
+			fig.set_xlabel('Jours')
+			fig.set_ylabel('Nombre de vidéos')
+			plt.show()
+
+		print('''\nLe prochain graphique va afficher :
+Nombre de vidéos par année''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafr=pd.read_sql('''SELECT count(*) AS nbvids , to_char(dateSortie,'YYYY') AS annee
+								FROM Video
+								GROUP BY annee
+								ORDER BY annee;''', con=co)
+			
+
+			fig = datafr.plot.bar(x='annee',y='nbvids',stacked=True,figsize=[8,8],title='Nombre de vidéos par année')
+			fig.set_xlabel('Année')
+			fig.set_ylabel('Nombre de vidéos')
 			plt.show()
 
 
