@@ -2,7 +2,6 @@ import pandas as pd
 import psycopg2 as psy
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from getpass import getpass
 
@@ -126,6 +125,20 @@ Nombre de vidéos qui passent en tendance par année''')
 			fig = datafr.plot.bar(x='annee',y='nbvids',stacked=True,figsize=[8,8],title='Nombre de vidéos qui passent en tendance par année')
 			fig.set_xlabel('Année')
 			fig.set_ylabel('Nombre de vidéos')
+			plt.show()
+
+		print('''\nLe prochain graphique va afficher :
+Nombre de vues moyen au fil du temps''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafr=pd.read_sql('''SELECT to_char(dateSortie,'YYYY/DD') AS dateS , avg(vues) AS vuesT
+								FROM Video
+								GROUP BY dateS;''', con=co)
+			
+
+			fig = datafr.plot(x='dates',y='vuest',figsize=[8,8],title='Nombre de vues moyen au fil du temps')
+			fig.set_xlabel('Date')
+			fig.set_ylabel('Nombre de vues')
 			plt.show()
 
 
