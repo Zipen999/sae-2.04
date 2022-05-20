@@ -141,12 +141,32 @@ Nombre de vues moyen au fil du temps''')
 			fig.set_ylabel('Nombre de vues')
 			plt.show()
 
+		print('''\nLe prochain graphique va afficher :
+Nombre moyen de vues sur les vidéos tendance par heure''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafr=pd.read_sql('''SELECT sum(vues) AS vuest, to_char(dateSortie,'HH24') AS hh
+									FROM Video
+									GROUP BY hh;''', con=co)
+			
+
+			fig = datafr.plot.bar(x='hh',y='vuest',legend=False,figsize=[8,8],title='Nombre moyen de vues sur les vidéos tendance par heure')
+			fig.set_xlabel('Heure')
+			fig.set_ylabel('Nombre de vues')
+			plt.show()
 
 	except(Exception,psy.DatabaseError) as error:
 		print(error)
 	finally:
 		if co is not None:
 			co.close()
+
+# user=input("Nom d'utilisateur : ")
+# pwd = getpass(prompt="Mot de passe : ")
+user="mohassani1"
+pwd="azerty105"
+userdb = "db" + user 
+Graphes(user, userdb, pwd)
 
 user=input("Nom d'utilisateur : ")
 pwd = getpass(prompt="Mot de passe : ")
