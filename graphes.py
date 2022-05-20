@@ -16,9 +16,7 @@ Le nom et le nombre de vidéos des 15 chaines étant le plus apparu en tendances
 		if(var=='O' or var=='o' or var=='1'):
 			datafr=pd.read_sql('''SELECT c.nom AS chaine, count(*) AS NbVids
 									FROM Video v
-										INNER JOIN Publier p ON v.idVideo = p.Video
-										AND v.dateTendance = p.dateTendance
-										INNER JOIN Chaine c ON c.idChaine = p.Chaine
+										INNER JOIN Chaine c ON c.idChaine = v.Chaine
 											GROUP BY c.nom
 											ORDER BY NbVids DESC
 											LIMIT 15;''', con=co)
@@ -36,8 +34,8 @@ Le nombre de nouvelles vidéos en tendances en fonction des jours de la semaine'
 		if(var=='O' or var=='o' or var=='1'):
 			datafr=pd.read_sql('''SELECT to_char(v.dateSortie,'Day') AS Jour, count(*) AS Nb 
 									FROM Video v
-										GROUP BY Jour 
-										ORDER BY Nb DESC;''', con=co)
+									GROUP BY Jour 
+									ORDER BY Nb DESC;''', con=co)
 			fig=datafr.plot(x='jour', y='nb', color='red', legend=False, kind='bar', figsize=[8,8])
 			fig.grid(axis='y')
 			fig.set_xlabel('Jour')
@@ -64,11 +62,31 @@ Le nombre de vidéos en tendance en fonction des heures de la journée''')
 			plt.yticks(np.linspace(100, max(datafr.nb), int(max(datafr.nb)/1000)+1))
 			plt.show() # Affichage
 
+
+
+
+		print('''\nLe prochain graphique va afficher :
+Les catégories les plus populaires''')
+		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
+		if(var=='O' or var=='o' or var=='1'):
+			datafrpie=pd.read_sql('''SELECT ca.nom AS categorie, 
+									round((count(*) / ((SELECT count(*) FROM Video)*1.0)*100),2) AS pourcent
+									FROM Video v
+									INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
+									WHERE ca.nom != 'NaN'
+									GROUP BY ca.idCategorie;''', con=co)
+			print(datafrpie)
+			datafrpie.groupby(['categorie']).sum().plot(kind='pie', y='pourcent',autopct='%1.0f%%',
+                                title='Pourcentage du nombre de videos par categories',legend=False,figsize=[8,8])
+			plt.axis('off')
+			plt.show()
+
 	except(Exception,psy.DatabaseError) as error:
 		print(error)
 	finally:
 		if co is not None:
 			co.close()
+
 
 user=input("Nom d'utilisateur : ")
 pwd = getpass(prompt="Mot de passe : ")
