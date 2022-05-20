@@ -114,7 +114,7 @@ Temps qui s'écoule entre la publication et le passage tendance d'une video''')
 			plt.show()
 
 		print('''\nLe prochain graphique va afficher :
-Nombre de vidéos par année''')
+Nombre de vidéos qui passent en tendance par année''')
 		var=input("Voulez-vous afficher ce graphe (O/n) ? ")
 		if(var=='O' or var=='o' or var=='1'):
 			datafr=pd.read_sql('''SELECT count(*) AS nbvids , to_char(dateSortie,'YYYY') AS annee
@@ -123,7 +123,7 @@ Nombre de vidéos par année''')
 								ORDER BY annee;''', con=co)
 			
 
-			fig = datafr.plot.bar(x='annee',y='nbvids',stacked=True,figsize=[8,8],title='Nombre de vidéos par année')
+			fig = datafr.plot.bar(x='annee',y='nbvids',stacked=True,figsize=[8,8],title='Nombre de vidéos qui passent en tendance par année')
 			fig.set_xlabel('Année')
 			fig.set_ylabel('Nombre de vidéos')
 			plt.show()
