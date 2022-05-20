@@ -31,6 +31,7 @@ def Table(user, userdb, pwd):
 	####################### Suppression des tables
 			print("Suppression des tables déjà existantes...")
 			curs.execute('''
+							DROP TABLE IF EXISTS Video;
 							DROP TABLE IF EXISTS Chaine;
 							DROP TABLE IF EXISTS Categorie;
 							DROP TABLE IF EXISTS Video;
