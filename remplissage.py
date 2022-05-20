@@ -25,16 +25,16 @@ def Table(user, userdb, pwd):
 
 		curs = co.cursor()
 	#######################
-		print("\nTemps estimé de refonte de la base de données : 2min 40s")
+		print("\nTemps estimé de refonte de la base de données : ~4min")
 		var=input("Refaire la base de données (O/n) ? ")
 		if(var=='O' or var=='o' or var==1):
 	####################### Suppression des tables
 			print("Suppression des tables déjà existantes...")
-			curs.execute('''DROP TABLE IF EXISTS CSV;
-							DROP TABLE IF EXISTS Publier;
+			curs.execute('''
 							DROP TABLE IF EXISTS Chaine;
+							DROP TABLE IF EXISTS Categorie;
 							DROP TABLE IF EXISTS Video;
-							DROP TABLE IF EXISTS Categorie;''')
+							DROP TABLE IF EXISTS CSV;''')
 	####################### Creation tables
 			print("Création des tables...")
 			curs.execute('''
@@ -55,7 +55,11 @@ def Table(user, userdb, pwd):
 								CONSTRAINT pk_CSV PRIMARY KEY (video_id, trending_date)
 
 							);
-
+							CREATE TABLE Chaine(
+								idChaine 	char(24),
+								nom			varchar(100),
+								CONSTRAINT pk_Chaine PRIMARY KEY (idChaine)
+							);
 							CREATE TABLE Categorie(
 								idCategorie	numeric,
 								nom varchar(30),
@@ -71,21 +75,10 @@ def Table(user, userdb, pwd):
 								dislikes numeric,
 								commentaires numeric,
 								categorie numeric,
+								chaine    char(24),
 								CONSTRAINT pk_Video PRIMARY KEY (idVideo, dateTendance),
-								CONSTRAINT fk_Categorie FOREIGN KEY (categorie) REFERENCES Categorie(idCategorie)
-							);
-							CREATE TABLE Chaine(
-								idChaine 	char(24),
-								nom			varchar(100),
-								CONSTRAINT pk_Chaine PRIMARY KEY (idChaine)
-							);
-							CREATE TABLE Publier(
-								video char(11),
-								dateTendance date,
-								chaine char(24),
-								CONSTRAINT pk_publier PRIMARY KEY (video,dateTendance,chaine),
-								CONSTRAINT fk_chaine FOREIGN KEY (chaine) REFERENCES Chaine(idChaine),
-								CONSTRAINT fk_video FOREIGN KEY (video, dateTendance) REFERENCES Video(idVideo, dateTendance)
+								CONSTRAINT fk_Categorie FOREIGN KEY (categorie) REFERENCES Categorie(idCategorie),
+								CONSTRAINT fk_chaine FOREIGN KEY (chaine) REFERENCES Chaine(idChaine)
 							);
 							''')
 
@@ -96,19 +89,14 @@ def Table(user, userdb, pwd):
 				curs.execute('''INSERT INTO CSV VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
 					(row.video_id,row.title,row.publishedAt,row.channelId,row.channelTitle,
 						row.categoryId,row.category,row.trending_date,row.view_count,row.likes,row.dislikes,row.comment_count))
+			curs.execute(''' INSERT INTO Chaine(idChaine, nom)
+				SELECT DISTINCT channelId,channelTitle 
+				FROM CSV
+				ON CONFLICT ON CONSTRAINT pk_Chaine DO NOTHING;''')
 
 			curs.execute(''' INSERT INTO Categorie SELECT DISTINCT categoryId, category FROM CSV;''')
 			curs.execute(''' INSERT INTO Video
-							SELECT video_id,trending_date,title,publishedAt,view_count,likes, dislikes, comment_count, categoryId FROM CSV;''')
-
-			curs.execute(''' INSERT INTO Chaine(idChaine, nom)
-							SELECT DISTINCT channelId,channelTitle 
-							FROM CSV
-							ON CONFLICT ON CONSTRAINT pk_Chaine DO NOTHING;''')
-
-
-			curs.execute(''' INSERT INTO Publier
-							SELECT video_id, trending_date , channelId FROM CSV;''')
+							SELECT video_id,trending_date,title,publishedAt,view_count,likes, dislikes, comment_count, categoryId,channelId FROM CSV;''')
 
 			curs.execute('''DROP TABLE IF EXISTS CSV;''')
 	####################### Fin insertion
