@@ -161,13 +161,6 @@ Nombre moyen de vues sur les vidéos tendance par heure''')
 		if co is not None:
 			co.close()
 
-# user=input("Nom d'utilisateur : ")
-# pwd = getpass(prompt="Mot de passe : ")
-user="mohassani1"
-pwd="azerty105"
-userdb = "db" + user 
-Graphes(user, userdb, pwd)
-
 user=input("Nom d'utilisateur : ")
 pwd = getpass(prompt="Mot de passe : ")
 userdb = "db" + user 
