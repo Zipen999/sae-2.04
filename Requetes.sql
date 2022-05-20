@@ -35,6 +35,6 @@ WHERE v.vues = (SELECT min(v2.vues)
 SELECT ca.nom , sum(v.vues) AS NbVids
 FROM Video v
 INNER JOIN Categorie ca ON ca.idCategorie = v.categorie
-WHERE ca.nom != 'NaN'c
+WHERE ca.nom != 'NaN'
 GROUP BY ca.idCategorie
 ORDER BY NbVids DESC;
